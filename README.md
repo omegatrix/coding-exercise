@@ -1,5 +1,7 @@
 # Coding exercise
 
+Fork this repository and commit and push all your work to the fork.  It is always best to do lots of small regular commits.
+
 Create an API using Python.  The API should have two endpoints.  One that, when given two numbers, adds them together and returns the sum.  Another that, when given two words, joins them with a dash and returns the result.  If you have any questions, pick an answer and then document it.
 
 You can use any Python framework or libraries that you want to.  There should be instructions on how to install and run it.  The API should ideally be platform independent but it will be evaluated on a recent MacOS machine.
