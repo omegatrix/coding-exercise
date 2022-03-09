@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path("api/", views.index, name="index"),
     path("api/hello-world/", views.hello_world, name="hello-world"),
+    path("api/add-numbers/<str:num_one>/<str:num_two>", views.add_numbers, name="add-numbers"),
 ]
