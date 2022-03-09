@@ -6,6 +6,7 @@ available_paths = [
     "/api",
     "/api/hello-world",
     "/api/add-numbers/<num_one>/<num_two>",
+    "/api/join-words/<word_one>/<word_two>",
 ]
 
 
@@ -53,6 +54,34 @@ def add_numbers(request: HttpRequest, num_one: str, num_two: str) -> JsonRespons
     return JsonResponse(
         {
             "sum": converted_num_one + converted_num_two,
+            "errors": None,
+        }
+    )
+
+
+def join_words(request: HttpRequest, word_one: str, word_two: str) -> JsonResponse:
+    word_list = [
+        {"original": word_one, "is_alpha": word_one.isalpha()},
+        {"original": word_two, "is_alpha": word_two.isalpha()},
+    ]
+    err_list = []
+
+    for word in word_list:
+        if word["is_alpha"] is False:
+            err_list.append({"message": f"Provided value {word['original']} contains non alphabetic characters"})
+
+    if err_list:
+        return JsonResponse(
+            {
+                "joined_words": None,
+                "errors": err_list,
+            },
+            status=400,
+        )
+
+    return JsonResponse(
+        {
+            "joined_words": f"{word_one}-{word_two}",
             "errors": None,
         }
     )

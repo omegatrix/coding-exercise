@@ -19,6 +19,7 @@ class ViewsTests(TestCase):
                     "/api",
                     "/api/hello-world",
                     "/api/add-numbers/<num_one>/<num_two>",
+                    "/api/join-words/<word_one>/<word_two>",
                 ],
             },
         )
@@ -96,6 +97,73 @@ class ViewsTests(TestCase):
                 "errors": [
                     {"message": "Provided value £453 is not a valid number"},
                     {"message": "Provided value <!> is not a valid number"},
+                ],
+            },
+        )
+
+    def test_join_words_with_alphabetic_values(self):
+        """
+        Test `/api/join-words/<word_one>/<word_two>` returns success response.
+        """
+
+        response = self.client.get(reverse("join-words", kwargs={"word_one": "Hello", "word_two": "there"}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(
+            response.content,
+            {
+                "joined_words": "Hello-there",
+                "errors": None,
+            },
+        )
+
+    def test_join_words_with_non_alphabetic_word_one(self):
+        """
+        Test `/api/join-words/<word_one>/<word_two>` returns error response.
+        """
+
+        response = self.client.get(reverse("join-words", kwargs={"word_one": "Batman123", "word_two": "Gotham"}))
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(
+            response.content,
+            {
+                "joined_words": None,
+                "errors": [{"message": "Provided value Batman123 contains non alphabetic characters"}],
+            },
+        )
+
+    def test_join_words_with_non_alphabetic_word_two(self):
+        """
+        Test `/api/join-words/<word_one>/<word_two>` returns error response.
+        """
+
+        response = self.client.get(reverse("join-words", kwargs={"word_one": "Bruce", "word_two": "W@yne"}))
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(
+            response.content,
+            {
+                "joined_words": None,
+                "errors": [{"message": "Provided value W@yne contains non alphabetic characters"}],
+            },
+        )
+
+    def test_join_words_with_non_alphabetic_values(self):
+        """
+        Test `/api/join-words/<word_one>/<word_two>` returns error response.
+        """
+
+        response = self.client.get(reverse("join-words", kwargs={"word_one": "Bruc3", "word_two": "W@yne"}))
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(
+            response.content,
+            {
+                "joined_words": None,
+                "errors": [
+                    {"message": "Provided value Bruc3 contains non alphabetic characters"},
+                    {"message": "Provided value W@yne contains non alphabetic characters"},
                 ],
             },
         )
