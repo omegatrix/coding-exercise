@@ -167,3 +167,24 @@ class ViewsTests(TestCase):
                 ],
             },
         )
+
+    def test_path_not_found(self):
+        """
+        Test access to undefined path returns 404.
+        """
+
+        response = self.client.get("something")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertJSONEqual(
+            response.content,
+            {
+                "message": "Path not found",
+                "available_paths": [
+                    "/api",
+                    "/api/hello-world",
+                    "/api/add-numbers/<num_one>/<num_two>",
+                    "/api/join-words/<word_one>/<word_two>",
+                ],
+            },
+        )

@@ -85,3 +85,13 @@ def join_words(request: HttpRequest, word_one: str, word_two: str) -> JsonRespon
             "errors": None,
         }
     )
+
+
+def path_not_found(request, exception) -> JsonResponse:
+    return JsonResponse(
+        {
+            "message": "Path not found",
+            "available_paths": available_paths,
+        },
+        status=404,
+    )
