@@ -29,7 +29,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Code Quality
+      - name: Run Linters
         run: |
           black .
           isort .
