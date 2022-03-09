@@ -1,6 +1,5 @@
 from django.http import HttpRequest, JsonResponse
 
-
 available_paths = [
     "/api",
     "/api/hello-world",
