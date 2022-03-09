@@ -1,29 +1,209 @@
 # Coding exercise
 
-Clone this repository and commit your work to it.  Push the repository to a suitable service so that we can see the results (eg GitLab or GitHub).
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Running the app](#running-the-app)
+* [API Reference](#api-reference)
+  * [Index](#index)
+  * [Hello World](#hello-world)
+  * [Add two numbers](#add-two-numbers)
+  * [Join two words by a `-`](#join-two-words-by)
+  * [Path not found](#path-not-found)
+* [Running tests](#running-tests)
 
-Create an API using Python. The API should have three endpoints:
+## Requirements
 
-1. Return "Hello World"
-2. Given two numbers, add them together and return the sum
-3. Given two words, join them with a dash and return the result
+This project uses [Django](https://github.com/django/django) web framework `4.0.3` which requires Python `3.8` or above.
 
-If you have any questions, pick an answer and then document it.
+Download and install Python if you have not got it installed already. Guides can be found [here](https://www.python.org/downloads/). From this point forward it is assumed that you have got Python `3.8` or above installed.
 
-You can use any Python framework or libraries that you want to.  There should be instructions on how to install and run it.  The API should ideally be platform independent but it will be evaluated on a recent MacOS machine.
+## Installation
 
-Preferably there should be some tests.
+Clone the repository if you have not already done it. Next, navigate to the folder by using command:
 
-The code should be neat and error free.  We use `black`, `isort` and `flake8` to keep our code neat.  You don't have to use this, but you may find it helpful.  You can install them by running: `pip install -U black isort flake8`.  We have included configuration in this repo.  You can run them using:
+```
+cd {path-to-the-folder}/coding-exercise
+```
 
-    black .
-    isort .
-    flake8 .
+Install the required dependencies:
 
-Don't worry if you can't complete all the tasks in the allotted time. Document your solution as it stands. We are interested in knowing how you write code and how you solve problems.
 
-Things we will be judging the submission on:
+```
+python -m pip install -r requirements.txt
+```
 
-* Documentation, including instructions on how to run your solution
-* Correctness and completeness of solution
-* Code quality
+Now you are ready to run the application locally.
+
+
+## Running the app
+
+Run the following command on your terminal
+
+```
+python manage.py runserver
+```
+
+> **_NOTE:_**  Django might not be happy about runnig the app without the initial migration. You can ignore the warning message as this is okay since we will not be using a database nor utilise admin functionalitites.
+
+The application runs on `localhost` and port `8000` which is `127.0.0.1:8000`
+
+You can use an API development tool such as [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) to access the API endpoints. Alternatively, you can use [Curl](https://curl.se/) commands.
+
+
+## API Reference
+
+#### Index
+
+```http
+GET /api/
+```
+
+Curl command
+```
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/'
+```
+
+Response
+```json
+{
+    "message": "Coding exercise solution",
+    "available_paths": [
+        "/api",
+        "/api/hello-world",
+        "/api/add-numbers/<num_one>/<num_two>",
+        "/api/join-words/<word_one>/<word_two>"
+    ]
+}
+```
+
+#### Hello World
+
+```http
+GET /api/hello-world
+```
+
+Curl command
+```
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/hello-world'
+```
+
+Response
+```json
+{
+    "message": "Hello World"
+}
+```
+
+#### Add two numbers
+
+> **_Limitations:_**  Values such as 10 / 2 will be considered as invalid and an error response will be returned.
+
+```http
+GET /api/add-numbers/<num_one>/<num_two>
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `num_one` | `string` | **Required**. The first number to add. |
+| `num_two` | `string` | **Required**. The second number to add. |
+
+Curl command
+```
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/add-numbers/101/73'
+```
+
+Success Response
+```json
+{
+    "sum": 174.0,
+    "errors": null
+}
+```
+
+Error Response
+```json
+{
+    "sum": null,
+    "errors": [
+        {
+            "message": "Provided value £101 is not a valid number"
+        },
+        {
+            "message": "Provided value 73% is not a valid number"
+        }
+    ]
+}
+```
+
+#### Join two words by a `-`.
+
+> **_Limitations:_**  Values such as `1st`, `It's`, `high-level` will be considered as invalid and an error response will be returned.
+
+```http
+GET /api/join-words/<word_one>/<word_two>
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `word_one` | `string` | **Required**. The first word to join. |
+| `word_two` | `string` | **Required**. The second word to join. |
+
+Curl command
+```
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/join-words/Bruce/Wayne'
+```
+
+Success Response
+```json
+{
+    "joined_words": "Bruce-Wayne",
+    "errors": null
+}
+```
+
+Error Response
+```json
+{
+  "joined_words": null,
+  "errors": [
+        {
+            "message": "Provided value Br@ce contains non alphabetic characters"
+        },
+        {
+            "message": "Provided value Wayne101 contains non alphabetic characters"
+        }
+    ]
+}
+```
+
+#### Path not found
+
+```http
+GET /api/<undefined path>
+```
+
+Curl command
+```
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/something'
+```
+
+Response
+```json
+{
+    "message": "Path not found",
+    "available_paths": [
+        "/api",
+        "/api/hello-world",
+        "/api/add-numbers/<num_one>/<num_two>",
+        "/api/join-words/<word_one>/<word_two>"
+    ]
+}
+```
+
+## Running tests
+
+To run tests, run the following command
+
+```
+python manage.py test
+```
