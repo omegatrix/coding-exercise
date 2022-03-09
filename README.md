@@ -25,8 +25,23 @@ Clone the repository if you have not already done it. Next, navigate to the fold
 cd {path-to-the-folder}/coding-exercise
 ```
 
-Install the required dependencies:
+Create a virtual environment
+> **_More about virtual environments:_**  [Virtual environment](https://docs.python.org/3/tutorial/venv.html).
+```
+python -m venv .venv
+```
 
+Activate the virtual environment
+```
+source .venv/bin/activate
+```
+
+(Optional) Upgrade `pip` if needed
+```
+python -m pip install --upgrade pip
+```
+
+Install the required dependencies:
 
 ```
 python -m pip install -r requirements.txt
@@ -79,12 +94,12 @@ Response
 #### Hello World
 
 ```http
-GET /api/hello-world
+GET /api/hello-world/
 ```
 
 Curl command
 ```
-curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/hello-world'
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/hello-world/'
 ```
 
 Response
@@ -99,7 +114,7 @@ Response
 > **_Limitations:_**  Values such as 10 / 2 will be considered as invalid and an error response will be returned.
 
 ```http
-GET /api/add-numbers/<num_one>/<num_two>
+GET /api/add-numbers/<num_one>/<num_two>/
 ```
 
 | Parameter | Type     | Description                |
@@ -109,7 +124,7 @@ GET /api/add-numbers/<num_one>/<num_two>
 
 Curl command
 ```
-curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/add-numbers/101/73'
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/add-numbers/101/73/'
 ```
 
 Success Response
@@ -140,7 +155,7 @@ Error Response
 > **_Limitations:_**  Values such as `1st`, `It's`, `high-level` will be considered as invalid and an error response will be returned.
 
 ```http
-GET /api/join-words/<word_one>/<word_two>
+GET /api/join-words/<word_one>/<word_two>/
 ```
 
 | Parameter | Type     | Description                |
@@ -150,7 +165,7 @@ GET /api/join-words/<word_one>/<word_two>
 
 Curl command
 ```
-curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/join-words/Bruce/Wayne'
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/join-words/Bruce/Wayne/'
 ```
 
 Success Response
@@ -179,12 +194,12 @@ Error Response
 #### Path not found
 
 ```http
-GET /api/<undefined path>
+GET /api/<undefined path>/
 ```
 
 Curl command
 ```
-curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/something'
+curl -XGET -H "Content-type: application/json" 'http://127.0.0.1:8000/api/something/'
 ```
 
 Response
